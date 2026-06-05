@@ -130,3 +130,4 @@ Run TypeScript type checking:
 ```sh
 npm run type-check
 ```
+# primeDemo
