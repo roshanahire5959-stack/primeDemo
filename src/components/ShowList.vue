@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import ShowCard from '@/components/ShowCard.vue'
-import { useVideosDataStore } from '../store/videoData'
+import { useVideosDataStore } from '../store/tvShowsData'
 
 const store = useVideosDataStore()
 
