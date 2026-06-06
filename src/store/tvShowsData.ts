@@ -2,14 +2,14 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { TVShow, SearchResult } from '@/types'
-
-export const useVideosDataStore = defineStore('videos', () => {
+const baseUrl = ref<string>('https://api.tvmaze.com')
+export const useTvShowsStore = defineStore('videos', () => {
     const allShows = ref<TVShow[]>([])
     const shows = ref<TVShow[]>([])
     const searchQuery = ref<string>('')
 
-    const getShows = async (url: string): Promise<void> => {
-        const response = await fetch(url)
+    const getShows = async (): Promise<void> => {
+        const response = await fetch(`${baseUrl.value}/shows`)
         if (!response.ok) {
             throw new Error(`Failed to fetch shows (${response.status})`)
         }
@@ -18,8 +18,9 @@ export const useVideosDataStore = defineStore('videos', () => {
         shows.value = [...data]
     }
 
-    const getSearchShows = async (url: string): Promise<void> => {
-        const response = await fetch(url)
+    const getSearchShows = async (query: string): Promise<void> => {
+        console.log(typeof query)
+        const response = await fetch(`${baseUrl.value}/search/shows?q=${query}`)
         if (!response.ok) {
             throw new Error(`error: ${response.status}`);
         }

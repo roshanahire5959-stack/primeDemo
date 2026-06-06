@@ -35,15 +35,15 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useVideosDataStore } from '../store/tvShowsData'
+import { useTvShowsStore } from '../store/tvShowsData'
 import { debounceSearch } from '@/composables/debounce'
 import { ref } from 'vue'
 
 
-const store = useVideosDataStore()
+const store = useTvShowsStore()
 
 const debounce = debounceSearch<string>((value) => {
-  const query: string = value.toLowerCase()
+  const query = value.toLowerCase()
 
   if (query) {
     // store.shows = store.allShows.filter(show =>
@@ -61,10 +61,10 @@ const error = ref<string>('')
 const getSearchResult = async (query: string): Promise<void> => {
   try {
     loading.value = true
-    store.getSearchShows(`https://api.tvmaze.com/search/shows?q=${query}`)
-  } catch (err) {
-    if (err) {
-      error.value = 'Something went wrong'
+    await store.getSearchShows(query)
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message
     }
   }
   finally {
