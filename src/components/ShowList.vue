@@ -7,7 +7,7 @@
       <ShowCard v-for="(show, i) in store.allShows" :key="i" :show="show" />
     </ul>
     <h1 class="text-5xl text-center" v-else>No Data Found !</h1>
-    <div class="text-center mt-10"> <button
+    <div v-if="!store.searchQuery" class="text-center mt-10"> <button
         class="px-3 py-2 text-sm text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all"
         @click="prew">
         prew</button> <button
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import ShowCard from '@/components/ShowCard.vue'
 import { useTvShowsStore } from '../store/tvShowsData'
 
@@ -48,13 +48,14 @@ const currentPage = ref<number>(1)
 const itemPerPage = ref<number>(20)
 
 const totalPage = computed(() => {
-  return Math.ceil(store.allShows.length / itemPerPage.value)
+  return Math.ceil(store.tempArr.length / itemPerPage.value)
 })
 
 const pagination = async (): Promise<void> => {
   const start: number = (currentPage.value - 1) * itemPerPage.value
   const end: number = start + itemPerPage.value
-  store.allShows = store.allShows.slice(start, end)
+  store.allShows = store.tempArr.slice(start, end)
+  console.log("  store.allShows ", store.allShows.length)
 }
 
 const prew = () => {
@@ -71,4 +72,10 @@ const next = () => {
     pagination()
   }
 }
+
+watch(() => store.loading, (isLoading) => {
+  if (!isLoading && !store.searchQuery) {
+    pagination()
+  }
+})
 </script>
