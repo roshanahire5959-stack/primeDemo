@@ -9,6 +9,7 @@ export const useTvShowsStore = defineStore('videos', () => {
     const searchQuery = ref<string>('')
     const loading = ref<boolean>(false)
     const error = ref<string>('')
+    const isDisable = ref<boolean>(true)
 
     const getShows = async (): Promise<void> => {
         const response = await fetch(`${baseUrl.value}/shows`)
@@ -38,6 +39,7 @@ export const useTvShowsStore = defineStore('videos', () => {
         loading,
         error,
         getShows,
-        getSearchShows
+        getSearchShows,
+        isDisable
     }
 })
