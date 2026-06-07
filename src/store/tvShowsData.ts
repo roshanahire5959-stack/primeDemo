@@ -7,6 +7,8 @@ export const useTvShowsStore = defineStore('videos', () => {
     const allShows = ref<TVShow[]>([])
     const shows = ref<TVShow[]>([])
     const searchQuery = ref<string>('')
+    const loading = ref<boolean>(false)
+    const error = ref<string>('')
 
     const getShows = async (): Promise<void> => {
         const response = await fetch(`${baseUrl.value}/shows`)
@@ -33,6 +35,8 @@ export const useTvShowsStore = defineStore('videos', () => {
         allShows,
         shows,
         searchQuery,
+        loading,
+        error,
         getShows,
         getSearchShows
     }

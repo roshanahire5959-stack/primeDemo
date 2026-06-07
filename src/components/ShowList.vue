@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-8">
-    <p v-if="error">{{ error }}</p>
-    <p v-if="loading" class="text-gray-400 text-center py-12">Loading shows...</p>
+    <p v-if="store.error">{{ store.error }}</p>
+    <p v-else-if="store.loading" class="text-gray-400 text-center py-12">Loading shows...</p>
     <ul v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
       <ShowCard v-for="(show, i) in store.shows" :key="i" :show="show" />
     </ul>
@@ -15,17 +15,16 @@ import { useTvShowsStore } from '../store/tvShowsData'
 
 const store = useTvShowsStore()
 
-const loading = ref<boolean>(false)
-const error = ref<string>('')
+
 
 onMounted(async (): Promise<void> => {
   try {
-    loading.value = true
+    store.loading = true
     await store.getShows()
   } catch (err: unknown) {
-    error.value = 'Something went wrong'
+    store.error = 'Something went wrong'
   } finally {
-    loading.value = false
+    store.loading = false
   }
 })
 </script>
