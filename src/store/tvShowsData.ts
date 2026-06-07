@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import type { TVShow, SearchResult } from '@/types'
 const baseUrl = import.meta.env.VITE_BASE_URL
 
-export const useTvShowsStore = defineStore('videos', () => {
+export const useTvShowsStore = defineStore('tvShows', () => {
     const allShows = ref<TVShow[]>([])
     const searchQuery = ref<string>('')
     const loading = ref<boolean>(false)
