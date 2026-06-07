@@ -5,7 +5,6 @@ import type { TVShow, SearchResult } from '@/types'
 const baseUrl = ref<string>('https://api.tvmaze.com')
 export const useTvShowsStore = defineStore('videos', () => {
     const allShows = ref<TVShow[]>([])
-    const shows = ref<TVShow[]>([])
     const searchQuery = ref<string>('')
     const loading = ref<boolean>(false)
     const error = ref<string>('')
@@ -18,7 +17,6 @@ export const useTvShowsStore = defineStore('videos', () => {
         }
         const data: TVShow[] = await response.json()
         allShows.value = data
-        shows.value = [...data]
     }
 
     const getSearchShows = async (query: string): Promise<void> => {
@@ -28,13 +26,12 @@ export const useTvShowsStore = defineStore('videos', () => {
             throw new Error(`error: ${response.status}`);
         }
         const data: SearchResult[] = await response.json()
-        shows.value = data.map((el) => el.show)
+        allShows.value = data.map((el) => el.show)
     }
 
 
     return {
         allShows,
-        shows,
         searchQuery,
         loading,
         error,

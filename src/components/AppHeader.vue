@@ -38,7 +38,6 @@
 import { RouterLink } from 'vue-router'
 import { useTvShowsStore } from '../store/tvShowsData'
 import { debounceSearch } from '@/composables/debounce'
-import { ref, onMounted } from 'vue'
 
 
 const store = useTvShowsStore()
@@ -54,9 +53,23 @@ const debounce = debounceSearch<string>((value) => {
     // )
     getSearchResult(query)
   } else {
-    store.shows = [...store.allShows]
+    getShows()
   }
 }, 500)
+
+const getShows = async (): Promise<void> => {
+  try {
+    store.loading = true
+    await store.getShows()
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      store.error = err.message
+    }
+  }
+  finally {
+    store.loading = false
+  }
+}
 
 
 

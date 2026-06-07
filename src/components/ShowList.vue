@@ -2,9 +2,9 @@
   <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 py-8">
     <p v-if="store.error">{{ store.error }}</p>
     <p v-else-if="store.loading" class="text-gray-400 text-center py-12">Loading shows...</p>
-    <ul v-else-if='store?.shows?.length'
+    <ul v-else-if='store?.allShows?.length'
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-      <ShowCard v-for="(show, i) in store.shows" :key="i" :show="show" />
+      <ShowCard v-for="(show, i) in store.allShows" :key="i" :show="show" />
     </ul>
     <h1 class="text-5xl text-center" v-else>No Data Found !</h1>
     <div class="text-center mt-10"> <button
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import ShowCard from '@/components/ShowCard.vue'
 import { useTvShowsStore } from '../store/tvShowsData'
 
@@ -35,7 +35,7 @@ onMounted(async (): Promise<void> => {
     store.loading = true
     await store.getShows()
     pagination()
-  } catch (err: unknown) {
+  } catch {
     store.error = 'Something went wrong'
   } finally {
     store.loading = false
@@ -52,16 +52,13 @@ const totalPage = computed(() => {
 })
 
 const pagination = async (): Promise<void> => {
-  let start: number = (currentPage.value - 1) * itemPerPage.value
-  let end: number = start + itemPerPage.value
-  nextTick()
-  console.log("store.shows", store.shows)
-  store.shows = store.allShows.slice(start, end)
-  console.log("  store.shows ", store.shows)
+  const start: number = (currentPage.value - 1) * itemPerPage.value
+  const end: number = start + itemPerPage.value
+  store.allShows = store.allShows.slice(start, end)
 }
 
 const prew = () => {
-  if (currentPage.value > 0) {
+  if (currentPage.value > 1) {
     currentPage.value--
     pagination()
   }
