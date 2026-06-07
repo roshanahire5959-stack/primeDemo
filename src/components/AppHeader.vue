@@ -19,7 +19,7 @@
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input type="text" placeholder="Search TV shows…" :disabled="store.isDisable" v-model.trim="store.searchQuery"
-            @input="enterValue"
+            @input="enterValue" aria-label="Search TV shows"
             class="w-80 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-gray-300 placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" />
         </div>
       </div>
@@ -58,33 +58,13 @@ const debounce = debounceSearch<string>((value) => {
 }, 500)
 
 const getShows = async (): Promise<void> => {
-  try {
-    store.loading = true
-    await store.getShows()
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      store.error = err.message
-    }
-  }
-  finally {
-    store.loading = false
-  }
+  await store.getShows()
 }
 
 
 
 const getSearchResult = async (query: string): Promise<void> => {
-  try {
-    store.loading = true
-    await store.getSearchShows(query)
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      store.error = err.message
-    }
-  }
-  finally {
-    store.loading = false
-  }
+  await store.getSearchShows(query)
 }
 
 

@@ -31,15 +31,8 @@ const store = useTvShowsStore()
 
 onMounted(async (): Promise<void> => {
   store.isDisable = false
-  try {
-    store.loading = true
-    await store.getShows()
-    pagination()
-  } catch {
-    store.error = 'Something went wrong'
-  } finally {
-    store.loading = false
-  }
+  await store.getShows()
+  pagination()
 })
 
 
