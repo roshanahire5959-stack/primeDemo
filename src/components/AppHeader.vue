@@ -27,7 +27,7 @@
         <RouterLink :to="{ name: 'home' }"
           class="px-3 py-2 text-sm text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all"
           active-class="text-white bg-white/5">
-          Browse {{ store.shows.length }}
+          Browse
         </RouterLink>
       </nav>
     </div>
