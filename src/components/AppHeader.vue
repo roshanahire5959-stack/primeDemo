@@ -44,29 +44,14 @@ const store = useTvShowsStore()
 
 
 
-const debounce = debounceSearch<string>((value) => {
+const debounce = debounceSearch<string>(async (value) => {
   const query = value.toLowerCase()
-
   if (query) {
-    // store.shows = store.allShows.filter(show =>
-    //   show.name.toLowerCase().includes(query)
-    // )
-    getSearchResult(query)
+    await store.fetchApi(query)
   } else {
-    getShows()
+    await store.fetchApi('getShows')
   }
 }, 500)
-
-const getShows = async (): Promise<void> => {
-  await store.getShows()
-}
-
-
-
-const getSearchResult = async (query: string): Promise<void> => {
-  await store.getSearchShows(query)
-}
-
 
 
 

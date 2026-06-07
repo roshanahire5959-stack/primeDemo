@@ -31,7 +31,7 @@ const store = useTvShowsStore()
 
 onMounted(async (): Promise<void> => {
   store.isDisable = false
-  await store.getShows()
+  await store.fetchApi('getShows')
   pagination()
 })
 
